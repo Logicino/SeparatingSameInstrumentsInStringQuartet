@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Position Also Matters! Separating Same Instruments in String Quartet using Timbral and Positional Cues(Supplement Material & Demo)</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css " rel="stylesheet" />
+    <style>
+        figcaption {
+            text-align: center;
+        }
+        .style1 audio {
+            width: 20vw;
+            min-width: 100px;
+            max-width: 250px;
+        }
+
+        .style1 img {
+            width: 100%;
+            min-width: 300px;
+            max-width: 800px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .style1 td {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .style1 .container {
+            overflow-x: auto;
+        }
+
+        .style1 .vertdivider {
+            border-right: 2px solid;
+        }
+
+        .style1 table {
+            max-width: 80%;
+        }
+
+        .style1 h1 {
+            font-size: 35px;
+        }
+
+        .style1 h2 {
+            font-size: 25px;
+            font-weight: normal;
+        }
+
+        .style1 p {
+            font-size: 16px;
+        }
+
+        .style1 hr {
+            text-align: center;
+            width: 80%;
+            margin: 30px;
+        }
+
+        .style1 hr.solid {
+            border-top: 2px solid #bbb;
+        }
+
+        .style2 .container {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .style2 .image {
+            flex: 0 0 60%;
+            padding-right: 20px;
+        }
+
+        .style2 .audio {
+            flex: 1;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: flex-start; /* 使音频控件占满高度 */
+            height: 100%; /* 高度设置为100% */
+        }
+
+        .style2 img {
+            max-width: 100%;
+            height: auto;
+            cursor: pointer;
+        }
+
+        .style2 .audio-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .style2 .audio-item label {
+            margin-right: 4px;
+            font-size: 14px;
+        }
+
+        .style2 audio {
+            margin-bottom: 10px;
+        }
+
+        /* 定义style3类的样式 */
+        .style3 {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin-bottom: 20px; /* 举例：给这个div一个底部外边距 */
+            /* 你可以添加更多的样式属性 */
+        }
+        
+        /* 图片容器样式 */
+        .image {
+            flex-basis: 45%; /* 每个图片容器的基础宽度，使其一行两个 */
+            padding: 10px;
+            box-sizing: border-box; /* 包括padding在内的宽度计算 */
+        }
+        
+        /* 图片样式 */
+        .image img {
+            width: 100%;
+            height: auto;
+            cursor: pointer; /* 鼠标悬停时显示指针 */
+        }
+
+        /* Modal 样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+        }
+
+        .modal-content {
+            margin: 15% auto;
+            display: block;
+            width: 80%;
+            max-width: 800px;
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .song-list ul {
+            list-style-type: none; /* 移除列表前的默认符号 */
+            padding: 0;
+        }
+        
+        .song-list li {
+            padding: 10px;
+            border-bottom: 1px solid #ccc; /* 为每个列表项添加底部边框 */
+        }
+        
+        .song-list button {
+            margin-left: 10px; /* 按钮与文本之间的间距 */
+        }
+
+        .audio-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px; /* 添加间距 */
+        }
+        
+        .audio-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .audio-item label {
+            margin-right: 5px;
+        }
+        
+        .small-audio {
+            width: 150px; /* 设置播放器宽度 */
+            height: 30px; /* 设置播放器高度 */
+            margin-bottom: 10px; /* 添加一些间距 */
+        }
+
+        .audio-group{
+            margin-bottom: 20px;
+        }
+        
+    </style>
+</head>
+
+<body>
+    <!-- Overview部分 -->
+    <div class="container pt-5 mt-5 shadow p-5 mb-5 bg-white rounded">
+        <div class="style1">
+            <h1 style="text-align:center; font-size: 40px;">Position Also Matters! Separating Same Instruments in String Quartet using Timbral and Positional Cues</h1>
+        </div>
+        <div class="style1">
+            <h1>Overview</h1>
+            <p>
+                    String quartets inherently face challenges such as fundamental frequency overlap, similar timbres, and complex acoustic environments, making existing source separation methods relying solely on timbral characteristics less effective.This paper proposes a novel approach that enhances separation performance by encoding timbral and spatial positional cues to guide a neural network for source separation. To evaluate our method, we created a dataset of string quartet recordings with realistic reverberation with two different seating arrangements. Experiments demonstrate that our approach outperforms current state-of-the-art (SOTA) methods in source separation, achieving superior performance even in seating arrangements different from training, thus highlighting the importance of our timbral and positional encoding in improving separation quality and generalizability. 
+                <figure>
+                    <img src="img/seating.png" style="width: 55%;">
+                    <figcaption>Fig 1. String Quartet Seating Arrangement Types. All our models are trained on Type #2.</figcaption>
+                </figure>
+                <figure>
+                    <img src="img/network_2.png" style="width: 80%;">
+                    <figcaption>Fig 2. Overview of our method</figcaption>
+                </figure>
+            </p> 
+        </div>
+    </div>
+
+    
+  <!-- 模态框 (Modal) -->
+    <div id="myModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="img01">
+    </div>
+    <!-- Audio Demos部分，重复多次 -->
+    <div class="container pt-5 mt-5 shadow p-5 mb-5 bg-white rounded">
+        <div class="style2">
+            <a name="audio-demos"><h1>Separation Demo: "Pirates" (tested on Seating#2)</h1></a>
+            <div class="audio-group">
+                <p>Ground Truth:</p>
+                <div class="audio-row">
+                    <div class="audio-item">
+                        <label>Mixture:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/mix-seating2-24-Pirates.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="audio-item">
+                        <label>Cello:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/gt-seating2-1_Cello.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="audio-item">
+                        <label>Viola:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/gt-seating2-2_Viola.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="audio-item">
+                        <label>Violin2:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/gt-seating2-3_Violin_2.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="audio-item">
+                        <label>Violin1:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/gt-seating2-4_Violin_1.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+            </div>
+            <div class="audio-group">
+                <p>BS-Roformer</p>
+                <div class="audio-row">
+                    <div class="audio-item">
+                        <label>Mixture:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/mix-seating2-24-Pirates.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="audio-item">
+                        <label>Cello:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/bsroformer-seating2-24-Pirates_1_Cello.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="audio-item">
+                        <label>Viola:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/bsroformer-seating2-24-Pirates_2_Viola.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="audio-item">
+                        <label>Violin_2:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/bsroformer-seating2-24-Pirates_3_Violin_2.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="audio-item">
+                        <label>Violin_1:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/bsroformer-seating2-24-Pirates_4_Violin_1.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+            </div>
+
+            <div class="audio-group">
+                <p>HT-Demucs</p>
+                <div class="audio-row">
+                    <div class="audio-item">
+                        <label>Mixture:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/mix-seating2-24-Pirates.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="audio-item">
+                        <label>Cello:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/htdemucs-seating2-24-Pirates_1_Cello.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="audio-item">
+                        <label>Viola:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/htdemucs-seating2-24-Pirates_2_Viola.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="audio-item">
+                        <label>Violin_2:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/htdemucs-seating2-24-Pirates_3_Violin_2.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="audio-item">
+                        <label>Violin_1:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/htdemucs-seating2-24-Pirates_4_Violin_1.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+            </div>
+
+            <div class="audio-group">
+                <p>one-conditioned</p>
+                <div class="audio-row">
+                    <div class="audio-item">
+                        <label>Mixture:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/mix-seating2-24-Pirates.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="audio-item">
+                        <label>Cello:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/one-cond-seating2-Cello.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="audio-item">
+                        <label>Viola:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/one-cond-seating2-Viola.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="audio-item">
+                        <label>Violin2:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/one-cond-seating2-Violin_2.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="audio-item">
+                        <label>Violin1:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/one-cond-seating2-Violin_1.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+            </div>
+
+            <div class="audio-group">
+                <p>ours</p>
+                <div class="audio-row">
+                    <div class="audio-item">
+                        <label>Mixture:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/mix-seating2-24-Pirates.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="audio-item">
+                        <label>Cello:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/song_0.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="audio-item">
+                        <label>Viola:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/song_1.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="audio-item">
+                        <label>Violin2:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/song_2.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="audio-item">
+                        <label>Violin1:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/song_3.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+            </div>
+            <p>
+                <figure>
+                    <img src="img/seating-2.png" style="width: 30%; display: block; margin: 0 auto;">
+                    <figcaption>Fig 3. In this part, results are evaluated on seating arrangement type #2(the same as training).</figcaption>
+                </figure>
+                
+            </p>
+        </div>
+    </div>
+
+    <!-- 模态框 (Modal) -->
+    <div id="myModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="img01">
+    </div>
+    <!-- Audio Demos部分，重复多次 -->
+    <div class="container pt-5 mt-5 shadow p-5 mb-5 bg-white rounded">
+        <div class="style2">
+            <a name="audio-demos"><h1>Separation Demo: "Pirates" (tested on Seating#1)</h1></a>
+            <div class="audio-group">
+                <p>Ground Truth:</p>
+                <div class="audio-row">
+                    <div class="audio-item">
+                        <label>Mixture:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/mix-seating1-24-Pirates.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="audio-item">
+                        <label>Violin2:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/gt-seating1-1_Violin_2.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="audio-item">
+                        <label>Viola:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/gt-seating1-2_Viola.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="audio-item">
+                        <label>Cello:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/gt-seating1-3_Cello.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="audio-item">
+                        <label>Violin1:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/gt-seating1-4_Violin_1.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+            </div>
+            <div class="audio-group">
+                <p>BS-Roformer</p>
+                <div class="audio-row">
+                    <div class="audio-item">
+                        <label>Mixture:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/mix-seating1-24-Pirates.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="audio-item">
+                        <label>Violin2:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/bsroformer-seating1-24-Pirates_1_Violin_2.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="audio-item">
+                        <label>Viola:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/bsroformer-seating1-24-Pirates_2_Viola.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="audio-item">
+                        <label>Cello:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/bsroformer-seating1-24-Pirates_3_Cello.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="audio-item">
+                        <label>Violin1:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/bsroformer-seating1-24-Pirates_4_Violin_1.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+            </div>
+
+            <div class="audio-group">
+                <p>HT-Demucs</p>
+                <div class="audio-row">
+                    <div class="audio-item">
+                        <label>Mixture:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/mix-seating1-24-Pirates.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="audio-item">
+                        <label>Violin2:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/htdemucs-seating1-24-Pirates_1_Violin_2.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="audio-item">
+                        <label>Viola:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/htdemucs-seating1-24-Pirates_2_Viola.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="audio-item">
+                        <label>Cello:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/htdemucs-seating1-24-Pirates_3_Cello.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="audio-item">
+                        <label>Violin1:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/htdemucs-seating1-24-Pirates_4_Violin_1.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+            </div>
+
+            <div class="audio-group">
+                <p>one-conditioned</p>
+                <div class="audio-row">
+                    <div class="audio-item">
+                        <label>Mixture:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/mix-seating2-24-Pirates.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="audio-item">
+                        <label>Violin2:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/one-cond-seating1-Violin_2.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="audio-item">
+                        <label>Viola:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/one-cond-seating2-Viola.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="audio-item">
+                        <label>Cello:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/one-cond-seating2-Cello.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="audio-item">
+                        <label>Violin1:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/one-cond-seating1-Violin_1.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+            </div>
+
+            <div class="audio-group">
+                <p>ours</p>
+                <div class="audio-row">
+                    <div class="audio-item">
+                        <label>Mixture:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/mix-seating1-24-Pirates.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="audio-item">
+                        <label>Violin2:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/song_24.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="audio-item">
+                        <label>Viola:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/song_25.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="audio-item">
+                        <label>Cello:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/song_26.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="audio-item">
+                        <label>Violin1:</label>
+                        <audio controls class="small-audio">
+                            <source src="audio_demo/song_27.mp3" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+            </div>
+
+            <p>
+                <figure>
+                    <img src="img/seating-1.png" style="width: 30%; display: block; margin: 0 auto;">
+                    <figcaption>Fig 4. In this part, results are evaluated on seating arrangement type #1(different from training).</figcaption>
+                </figure>
+                
+            </p>
+            
+        </div>
+    </div>
+
+    
+    <!-- 模态框 (Modal) -->
+    <div id="myModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="img01">
+    </div>
+    
+    <div class="container pt-5 mt-5 shadow p-5 mb-5 bg-white rounded">
+        <div class="song-list">
+            <h2>Training Set: EnsembleSet String Quartet</h2>
+            <ul>
+                <li>1-aasesdeath</li>
+                <li>2-AgitatoDaFiereTempeste</li>
+                <li>3-AITardarDellaVendetta</li>
+                <li>4-anitrasdance</li>
+                <li>5-autumn</li>
+                <li>6-BelPiacer</li>
+                <li>7-Calcante_ed_Achille</li>
+                <li>9-concerto-in-d-minor</li>
+                <li>10-concerto-in-e-major</li>
+                <li>11-contrapunctusII</li>
+                <li>12-contrapunctusIII</li>
+                <li>13-contrapunctusIV</li>
+                <li>14-contrapunctusIX</li>
+                <li>15-contrapunctusV</li>
+                <li>17-contrapunctusVII</li>
+                <li>18-contrapunctusX</li>
+                <li>19-contrapunctusII</li>
+                <li>20-eine-kleine-nachtmusik-mvt1</li>
+                <li>22-hallelujah</li>
+                <li>23-k387</li>
+                <li>24-k421</li>
+                <li>25-k428</li>
+                <li>26-k458</li>
+                <li>28-k465</li>
+                <li>29-Marche</li>
+                <li>30-MentreDormi</li>
+                <li>32-NelleNubilntornoAlFato</li>
+                <li>33-op1_1</li>
+                <li>34-op1_2</li>
+                <li>35-op1_3</li>
+                <li>36-op1_4</li>
+                <li>37-op76-n1</li>
+                <li>38-op76-n2</li>
+                <li>39-op76-n3</li>
+                <li>40-op76-n4</li>
+                <li>41-op76-n5</li>
+                <li>42-op76-n6</li>
+                <li>43-Parto_ti_lascio</li>
+                <li>44-Passacaglia</li>
+                <li>45-Passaggier</li>
+                <li>46-quart18</li>
+                <li>47-Ride_il_ciel</li>
+                <li>48-RM-C012</li>
+                <li>49-RM-C013</li>
+                <li>50-RM-C014</li>
+                <li>52-RM-C016</li>
+                <li>53-RM-C017</li>
+                <li>54-RM-C021</li>
+                <li>55-SchubertF-D703-Quartettsatz</li>
+                <li>56-Se_potessero</li>
+                <li>57-SeDelFiume</li>
+                <li>58-Semiramide_riconosciuta</li>
+                <li>60-SiamNavi</li>
+                <li>61-Sol_la_brama</li>
+                <li>62-spring</li>
+                <li>63-summer</li>
+                <li>64-Voglio_che_sia_I_indegno</li>
+                <li>65-Voi_che_le_mie_vicende</li>
+                <li>66-winter</li>
+            </ul>
+        </div>
+    
+        <div class="song-list">
+            <h2>Validation Set: EnsembleSet String Quartet</h2>
+            <ul>
+                <li>8-CaraSposa</li>
+                <li>16-contrapunctusVI</li>
+                <li>27-k464</li>
+                <li>31-MiseroPargoletto</li>
+                <li>51-RM-C015</li>
+                <li>59-SentiSeLIngannai</li>
+            </ul>
+        </div>
+        
+        <div class="song-list">
+            <h2>Test Set: URMP String Quartet</h2>
+            <ul>
+                <li>24-Pirates_vn_vn_va_vc</li>
+                <li>26-King_vn_vn_va_vc</li>
+                <li>32-Fugue_vn_vn_va_vc</li>
+                <li>36-Rondeau_vn_vn_va_vc</li>
+                <li>38-Jerusalem_vn_vn_va_vc</li>
+                <li>44-K515_vn_vn_va_vc</li>
+            </ul>
+        </div>
+
+    
+    <!-- 添加更多内容块 -->
+    <!-- 你可以通过复制上面的<div class="container ...>块来重复多次 -->
+
+
+    <script>
+        // JavaScript to handle image click for modal
+        function showModal(img) {
+            var modal = document.getElementById("myModal");
+            var modalImg = document.getElementById("img01");
+            modal.style.display = "block";
+            modalImg.src = img.src;
+        }
+
+        // Close modal when clicking on 'x' or outside the image
+        var modal = document.getElementById("myModal");
+        var span = document.getElementsByClassName("close")[0];
+
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        modal.onclick = function(event) {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
